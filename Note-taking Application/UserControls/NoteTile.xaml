@@ -6,10 +6,15 @@
              xmlns:local="clr-namespace:Note_taking_Application.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Border CornerRadius="5" BorderThickness="1" Background="#333333" Margin="5">
+    <Grid x:Name="root">
+        <Border CornerRadius="5" BorderThickness="1" Background="#333333" Margin="5" ContextMenuOpening="Border_ContextMenuOpening">
             <Grid>
-                <TextBlock Text="{Binding Content}" Padding="10" Margin="4" MinHeight="60" MaxHeight="300" Foreground="White"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding NoteModel.LastEdit, UpdateSourceTrigger=PropertyChanged}" FontSize="8" Foreground="White" HorizontalAlignment="Right" />
+                <TextBlock Grid.Row="1" Text="{Binding NoteModel.Content, UpdateSourceTrigger=PropertyChanged}" Padding="10" Margin="4" MinHeight="60" MaxHeight="250" Foreground="White"/>
             </Grid>
         </Border>
     </Grid>

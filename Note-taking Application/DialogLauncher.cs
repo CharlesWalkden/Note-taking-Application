@@ -18,11 +18,14 @@ namespace Note_taking_Application
         public EventHandler<DialogEventArgs>? OnClose;
 
         public Window Window = new Window();
-        public ScrollViewer? ScrollViewer = null;
+        public ScrollViewer ScrollViewer;
 
         public DialogResult DialogResult;
-        public DialogLauncher(object owner, ResizeMode resizeMode)
+
+        public T? Control => ScrollViewer.Content as T;
+        public DialogLauncher(object? owner, ResizeMode resizeMode = ResizeMode.CanResize)
         {
+            Window.WindowStyle = WindowStyle.ToolWindow;
             Window.UseLayoutRounding = true;
             Window.SnapsToDevicePixels = true;
             Window.ResizeMode = resizeMode;
@@ -44,7 +47,7 @@ namespace Note_taking_Application
             Window.SizeToContent = SizeToContent.WidthAndHeight;
             Window.ShowInTaskbar = false;   
 
-            if (ScrollViewer.Content is IDialogClient dialogClient)
+            if (ScrollViewer.Content is IDialogClient<T> dialogClient)
             {
                 dialogClient.OnClose += new EventHandler<DialogEventArgs>(DialogClient_Close);
             }
@@ -59,10 +62,7 @@ namespace Note_taking_Application
         {
             if (DialogResult != DialogResult.None)
             {
-                if (Window.DialogResult == null)
-                {
-                    Window.DialogResult = false;
-                }
+                Window.DialogResult ??= false;
             }
 
             try

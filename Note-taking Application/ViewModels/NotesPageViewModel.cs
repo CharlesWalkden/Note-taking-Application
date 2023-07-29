@@ -9,7 +9,13 @@ namespace Note_taking_Application.ViewModels
 {
     public class NotesPageViewModel : BaseViewModel
     {
-        public Note? NoteModel { get; set; }
+        public Note NoteModel { get; set; }
+
+        public NotesPageViewModel(Note note)
+        {
+            NoteModel = note;
+            NoteModel.IsOpen = true;
+        }
 
 
     }

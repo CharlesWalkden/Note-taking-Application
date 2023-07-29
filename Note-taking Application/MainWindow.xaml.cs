@@ -1,4 +1,5 @@
-﻿using Note_taking_Application.ViewModels;
+﻿using Note_taking_Application.UserControls;
+using Note_taking_Application.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,6 @@ namespace Note_taking_Application
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            WindowManager.CloseAllWindows();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Note_taking_Application.Interfaces;
+using Note_taking_Application.Models;
 using Note_taking_Application.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,19 @@ namespace Note_taking_Application.UserControls
     /// <summary>
     /// Interaction logic for NotesPage.xaml
     /// </summary>
-    public partial class NotesPage : UserControl, IDialogClient
+    public partial class NotesPage : UserControl, IDialogClient<NotesPageViewModel>
     {
         #region Public Properties
 
-        public NotesPageViewModel? ViewModel { get => DataContext as NotesPageViewModel; }
+        public NotesPageViewModel ViewModel
+        {
+            get
+            {
+                return DataContext as NotesPageViewModel;
+            }
+
+            set => DataContext = value;
+        }
 
         #endregion
 
@@ -32,13 +41,8 @@ namespace Note_taking_Application.UserControls
 
         public NotesPage()
         {
-            DataContext = new NotesPageViewModel();
             InitializeComponent();
-        }
-        public NotesPage(NotesPageViewModel viewModel)
-        {
-            DataContext = viewModel;
-            InitializeComponent();
+            DataContext = new NotesPageViewModel(new Note());
         }
 
         #endregion

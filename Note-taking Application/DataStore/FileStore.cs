@@ -48,12 +48,12 @@ namespace Note_taking_Application.DataStore
             {
                 new Note("Test1","Content1"),
                 new Note("Test2","Content2"),
-                new Note("Test3","Content3"),
-                new Note("Test4","Content4"),
-                new Note("Test5","Content5"),
-                new Note("Test6","Content6"),
-                new Note("Test7","Content7"),
-                new Note("Test8","Content8"),
+                //new Note("Test3","Content3"),
+                //new Note("Test4","Content4"),
+                //new Note("Test5","Content5"),
+                //new Note("Test6","Content6"),
+                //new Note("Test7","Content7"),
+                //new Note("Test8","Content8"),
             };
             return note;
         }
