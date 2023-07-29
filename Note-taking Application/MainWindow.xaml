@@ -4,9 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Note_taking_Application"
+        xmlns:controls="clr-namespace:Note_taking_Application.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="450" MinWidth="350">
+    <Grid Background="#202020">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <Grid Grid.Column="0" MaxWidth="650" HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" Content="New Note" Height="30" Width="50" HorizontalAlignment="Left" Click="Button_Click"/>
+            <TextBlock Grid.Row="1" Text="Notes" Foreground="White" Margin="15,10,0,0" FontSize="32" FontWeight="DemiBold"/>
+            <TextBox Grid.Row="2" Height="30" MinWidth="650" HorizontalAlignment="Stretch" Margin="15,10,15,0" Background="#333333" BorderThickness="0" VerticalContentAlignment="Center" Foreground="White"/>
+            <ItemsControl x:Name="noteTiles" Grid.Row="3" Background="Transparent" ItemsSource="{Binding NoteList}" Margin="10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:NoteTile />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
     </Grid>
 </Window>

@@ -1,5 +1,4 @@
-﻿using Note_taking_Application.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,22 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Note_taking_Application
+namespace Note_taking_Application.UserControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for NoteTile.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class NoteTile : UserControl
     {
-        public MainWindow()
+        public NoteTile()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            WindowManager.CloseAllWindows();
         }
     }
 }
