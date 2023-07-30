@@ -16,9 +16,6 @@
 								Background="{TemplateBinding Background}"
 								SnapsToDevicePixels="True"
                                 CornerRadius="6">
-                            <Border.Effect>
-                                <DropShadowEffect ShadowDepth="3" BlurRadius="3"/>
-                            </Border.Effect>
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="False" 
                                           HorizontalScrollBarVisibility="Hidden"
 										  VerticalScrollBarVisibility="Hidden"/>

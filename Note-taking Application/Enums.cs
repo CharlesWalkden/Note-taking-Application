@@ -8,6 +8,10 @@ namespace Note_taking_Application
 {
     public enum DialogResult
     {
-        None, Cancel, OK, Yes, No, Accept
+        None, 
+        CloseAndSave, 
+        Yes, 
+        No, 
+        Accept
     }
 }

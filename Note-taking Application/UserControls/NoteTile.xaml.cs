@@ -55,6 +55,8 @@ namespace Note_taking_Application.UserControls
             {
                 NoteTileViewModel noteTileViewModel = new NoteTileViewModel();
                 noteTileViewModel.NoteModel = note;
+                noteTileViewModel.Content = note.Content ?? "";
+                noteTileViewModel.LastEdit = note.LastEdit;
                 noteTile.DataContext = noteTileViewModel;
             }
 
@@ -120,5 +122,24 @@ namespace Note_taking_Application.UserControls
         }
 
         #endregion
+
+        
+        // TODO: Move these into a style.
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                border.Background = new SolidColorBrush(Color.FromRgb(65, 65, 65));
+            }
+        }
+
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                border.Background = new SolidColorBrush(Color.FromRgb(51, 51, 51));
+            }
+        }
     }
 }

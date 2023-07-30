@@ -13,7 +13,7 @@ namespace Note_taking_Application
     /// A generic Dialog Launcher that we can re-use to create new windows with different content.
     /// </summary>
     /// <typeparam name="T">The content we want to display in this window.</typeparam>
-    public class DialogLauncher<T> where T : class, new()
+    public class DialogLauncher<T, VM> where T : class, new()
     {
         public EventHandler<DialogEventArgs>? OnClose;
 
@@ -32,6 +32,10 @@ namespace Note_taking_Application
             Window.Closed += Window_Closed;
             if (owner is Window windowOwner)
                 Window.Owner = windowOwner;
+            else
+            {
+                Window.Owner = WindowManager.MainWindow;
+            }
 
             ScrollViewer = new ScrollViewer()
             {
@@ -47,8 +51,11 @@ namespace Note_taking_Application
             Window.SizeToContent = SizeToContent.WidthAndHeight;
             Window.ShowInTaskbar = false;   
 
-            if (ScrollViewer.Content is IDialogClient<T> dialogClient)
+
+            if (ScrollViewer.Content is IDialogClient<VM> dialogClient)
             {
+                Window.Activated += dialogClient.DialogClient_Activated;
+                Window.Deactivated += dialogClient.DialogClient_Deactivated;
                 dialogClient.OnClose += new EventHandler<DialogEventArgs>(DialogClient_Close);
             }
         }
@@ -60,20 +67,6 @@ namespace Note_taking_Application
 
         public void Close()
         {
-            if (DialogResult != DialogResult.None)
-            {
-                Window.DialogResult ??= false;
-            }
-
-            try
-            {
-                Window.Close();
-            }
-            catch(Exception e)
-            {
-
-            }
-
             OnClose?.Invoke(this, new DialogEventArgs() { Result = DialogResult });
         }
 
@@ -85,13 +78,12 @@ namespace Note_taking_Application
         }
         private void Window_Closed(object? sender, EventArgs e)
         {
-            // If the result is none, this is the default and means we have not closed it, the user has with the X
+            // If the result is none, this is the default and means the user has closed it with the X
             if (DialogResult == DialogResult.None)
             {
-                OnClose?.Invoke(this, new DialogEventArgs() { Result = DialogResult });
+                Close();
             }
         }
-
     }
 
     public class DialogEventArgs : EventArgs
@@ -104,17 +96,6 @@ namespace Note_taking_Application
             Result = result;
         }
         public DialogResult Result;
-        public bool AffirmativeResponse
-        {
-            get
-            {
-                bool res = false;
-                if (Result == DialogResult.Yes || Result == DialogResult.OK || Result == DialogResult.Accept)
-                {
-                    res = true;
-                }
-                return res;
-            }
-        }
+        
     }
 }

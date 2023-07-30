@@ -1,15 +1,9 @@
-﻿using Note_taking_Application.Interfaces;
+﻿using Note_taking_Application.Event_Args;
+using Note_taking_Application.Interfaces;
 using Note_taking_Application.Models;
 using Note_taking_Application.UserControls;
 using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Note_taking_Application.ViewModels
 {
@@ -17,12 +11,41 @@ namespace Note_taking_Application.ViewModels
     {
         public Note NoteModel { get; set; }
 
-        private IDialogClient<NotesPageViewModel> NotesPage { get; set; }
+        public string Content
+        {
+            get => content ?? "";
+            set
+            {
+                if (content == value)
+                    return;
+
+                content = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime LastEdit
+        {
+            get => lastEdit;
+            set
+            {
+                if (lastEdit == value)
+                    return;
+
+                lastEdit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string? content { get; set; } 
+        private DateTime lastEdit { get; set; }
+
+        private IDialogClient<NotesPageViewModel>? NotesPage { get; set; }
 
         #region Constructor
 
         public NoteTileViewModel()
         {
+            LastEdit = DateTime.Now;
             NoteModel = new Note();
             OpenNoteCommand = new RelayCommand(OpenNote);
             CloseNoteCommand = new RelayCommand(CloseNote);
@@ -41,26 +64,49 @@ namespace Note_taking_Application.ViewModels
 
         public void OpenNote()
         {
-            IDialogClient<NotesPageViewModel> newNotesPage = (NotesPage)WindowManager.CreateWindow<NotesPage, NotesPageViewModel>(null);
+            IDialogClient<NotesPageViewModel>? newNotesPage = WindowManager.CreateWindow<NotesPage, NotesPageViewModel>();
 
             if (newNotesPage != null)
             {
                 newNotesPage.ViewModel = new NotesPageViewModel(NoteModel);
+                newNotesPage.OnClose += NotesPage_OnClose;
+                newNotesPage.ViewModel.OnContentChanged += NotesPage_UpdateContent;
+                newNotesPage.ViewModel.OnCreateNewNote += NotesPage_CreateNewNote;
+
+                // Store reference to the notes page we are opening.
                 NotesPage = newNotesPage;
+
                 WindowManager.OpenWindow(newNotesPage);
             }
         }
         public void CloseNote()
         {
-            WindowManager.CloseWindow(NotesPage);
-            NoteModel.IsOpen = false;
+            if (NotesPage != null)
+            {
+                WindowManager.CloseWindow(NotesPage);
+                NoteModel.IsOpen = false;
+            }
         }
         public void DeleteNote()
         {
 
         }
 
-        
+        private void NotesPage_OnClose(object? sender, DialogEventArgs e)
+        {
+            CloseNote();
+        }
+
+        private void NotesPage_UpdateContent(object? sender, NotesPageUpdateEventArgs e)
+        {
+            Content = e.Content ?? "";
+            LastEdit = e.LastEdit;
+        }
+        private void NotesPage_CreateNewNote(object? sender, EventArgs e)
+        {
+
+        }
 
     }
+
 }

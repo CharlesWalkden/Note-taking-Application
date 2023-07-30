@@ -4,6 +4,7 @@ using Note_taking_Application.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -14,16 +15,17 @@ namespace Note_taking_Application
 {
     public class WindowManager
     {
-        public static List<Window> WindowStack = new(); 
+        public static List<Window> WindowStack = new();
+        public static Window MainWindow = Application.Current.MainWindow;
 
-        public static IDialogClient<TT> CreateWindow<T, TT>(object? owner = null)
+        public static IDialogClient<VM>? CreateWindow<T, VM>(object? owner = null)
             where T : class, new()
         {
-            DialogLauncher<T> newWindow = new(null, ResizeMode.CanResize);
-            WindowStack.Add(newWindow.Window);
-            return (IDialogClient<TT>)newWindow?.Control;
-        }
+            DialogLauncher<T, VM> newWindow = new(owner, ResizeMode.CanResize);
 
+            WindowStack.Add(newWindow.Window);
+            return newWindow?.Control as IDialogClient<VM>;
+        }
         public static void OpenWindow<T>(IDialogClient<T> dialogClient)
         {
             Window? window = FindWindow(dialogClient);

@@ -5,12 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Note_taking_Application.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" MinHeight="100" MinWidth="200">
-    <Grid>
+             d:DesignHeight="450" d:DesignWidth="800" MinHeight="200" MinWidth="350">
+    <Grid Background="#333333">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="1" x:Name="notes" Text="{Binding NoteModel.Content, UpdateSourceTrigger=PropertyChanged}" Background="#333333" Foreground="White" 
-                 Padding="5" AcceptsReturn="True" TextWrapping="Wrap" AcceptsTab="True" BorderThickness="0" />
+
+        <Border x:Name="banner" Grid.Row="0" Grid.RowSpan="2" Background="#e6b905" Height="10"  VerticalAlignment="Top">
+            <Grid x:Name="bannerActions">
+                <Button Grid.Row="0" Style="{StaticResource buttonAltPlus}" Command="{Binding AddNoteCommand}" Height="30" Width="30" HorizontalAlignment="Left" ToolTip="New Note"/>
+                <Button Grid.Row="0" Style="{StaticResource buttonAltCross}" Height="30" Width="30" HorizontalAlignment="Right" ToolTip="New Note"  Click="closeNoteButton_Click"/>
+            </Grid>
+        </Border>
+
+        <TextBox Grid.Row="1" x:Name="notes" Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" Foreground="White" 
+                 Padding="5" AcceptsReturn="True" TextWrapping="Wrap" AcceptsTab="True" BorderThickness="0" Margin="0,30,0,0" CaretBrush="White"/>
     </Grid>
 </UserControl>
