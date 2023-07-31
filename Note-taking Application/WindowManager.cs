@@ -1,6 +1,7 @@
 ﻿using Note_taking_Application.Interfaces;
 using Note_taking_Application.Models;
 using Note_taking_Application.UserControls;
+using Note_taking_Application.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,16 @@ namespace Note_taking_Application
 
             WindowStack.Clear();
         }
+        public static void CloseWindow(Note note)
+        {
+            Window? toClose = FindWindow(note);
 
+            if (toClose != null)
+            {
+                toClose.Close();
+                WindowStack.Remove(toClose);
+            }
+        }
         public static void CloseWindow<T>(IDialogClient<T> dialogClient)
         {
             Window? toClose = FindWindow(dialogClient);
@@ -81,6 +91,31 @@ namespace Note_taking_Application
 
             return foundWindow;
         }
-        
+        /// <summary>
+        /// Finds the windows for a specific note.
+        /// </summary>
+        /// <param name="note">The note you want to find the window for.</param>
+        /// <returns>The window for this note.</returns>
+        private static Window? FindWindow(Note note)
+        {
+            Window? foundWindow = null;
+            foreach (Window window in WindowStack)
+            {
+                if (window.Content is ScrollViewer scrollViewer)
+                {
+                    if (scrollViewer.Content is IDialogClient<NotesPageViewModel> content)
+                    {
+                        if (note == content.ViewModel?.NoteModel)
+                        {
+                            foundWindow = window;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return foundWindow;
+        }
+
     }
 }

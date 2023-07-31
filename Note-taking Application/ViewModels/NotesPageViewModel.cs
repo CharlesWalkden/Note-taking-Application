@@ -40,11 +40,11 @@ namespace Note_taking_Application.ViewModels
         }
 
         public EventHandler<NotesPageUpdateEventArgs>? OnContentChanged;
-        public EventHandler? OnCreateNewNote;
+        public EventHandler<NotesPageActionRequestEventArgs>? OnCreateNewNote;
         
         public void CreateNewNote()
         {
-            OnCreateNewNote?.Invoke(this, new EventArgs());
+            OnCreateNewNote?.Invoke(this, new NotesPageActionRequestEventArgs() { Note = NoteModel, Requester = this});
         }
         
 

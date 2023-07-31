@@ -58,6 +58,15 @@ namespace Note_taking_Application.UserControls
                 noteTileViewModel.Content = note.Content ?? "";
                 noteTileViewModel.LastEdit = note.LastEdit;
                 noteTile.DataContext = noteTileViewModel;
+
+                MainWindowViewModel mainViewModel = (MainWindowViewModel)Application.Current.MainWindow.DataContext;
+                if (mainViewModel != null)
+                {
+                    noteTileViewModel.OnCreateNewNote += mainViewModel.AddNote_Request;
+                    noteTileViewModel.OnDeleteNote += mainViewModel.DeleteNote_Request;
+                    noteTileViewModel.OnOpenNote += mainViewModel.OpenNote_Request;
+                    noteTileViewModel.OnCloseNote += mainViewModel.CloseNote_Request;
+                }
             }
 
             return value;

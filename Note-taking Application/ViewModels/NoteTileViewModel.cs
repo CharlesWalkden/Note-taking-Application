@@ -54,6 +54,18 @@ namespace Note_taking_Application.ViewModels
 
         #endregion
 
+        #region Events
+
+        public EventHandler<NotesPageActionRequestEventArgs>? OnCreateNewNote;
+
+        public EventHandler<NotesPageActionRequestEventArgs>? OnDeleteNote;
+
+        public EventHandler<NotesPageActionRequestEventArgs>? OnOpenNote;
+
+        public EventHandler<NotesPageActionRequestEventArgs>? OnCloseNote;
+
+        #endregion
+
         #region ICommands
 
         public ICommand OpenNoteCommand { get; set; }
@@ -64,47 +76,31 @@ namespace Note_taking_Application.ViewModels
 
         public void OpenNote()
         {
-            IDialogClient<NotesPageViewModel>? newNotesPage = WindowManager.CreateWindow<NotesPage, NotesPageViewModel>();
-
-            if (newNotesPage != null)
-            {
-                newNotesPage.ViewModel = new NotesPageViewModel(NoteModel);
-                newNotesPage.OnClose += NotesPage_OnClose;
-                newNotesPage.ViewModel.OnContentChanged += NotesPage_UpdateContent;
-                newNotesPage.ViewModel.OnCreateNewNote += NotesPage_CreateNewNote;
-
-                // Store reference to the notes page we are opening.
-                NotesPage = newNotesPage;
-
-                WindowManager.OpenWindow(newNotesPage);
-            }
+            OnOpenNote?.Invoke(this, new NotesPageActionRequestEventArgs() { Note = NoteModel, Requester = this });
         }
         public void CloseNote()
         {
-            if (NotesPage != null)
-            {
-                WindowManager.CloseWindow(NotesPage);
-                NoteModel.IsOpen = false;
-            }
+            OnCloseNote?.Invoke(this, new NotesPageActionRequestEventArgs() { Note = NoteModel, Requester = this });
         }
         public void DeleteNote()
         {
-
+            OnDeleteNote?.Invoke(this, new NotesPageActionRequestEventArgs() { Note = NoteModel, Requester = this });
         }
 
-        private void NotesPage_OnClose(object? sender, DialogEventArgs e)
+        public void NotesPage_OnClose(object? sender, NotesPageActionRequestEventArgs e)
         {
             CloseNote();
         }
 
-        private void NotesPage_UpdateContent(object? sender, NotesPageUpdateEventArgs e)
+        public void NotesPage_UpdateContent(object? sender, NotesPageUpdateEventArgs e)
         {
             Content = e.Content ?? "";
             LastEdit = e.LastEdit;
         }
-        private void NotesPage_CreateNewNote(object? sender, EventArgs e)
+        
+        public void NotesPage_CreateNewNote(object? sender, NotesPageActionRequestEventArgs e)
         {
-
+            OnCreateNewNote?.Invoke(sender, e);
         }
 
     }
