@@ -35,6 +35,11 @@ namespace Note_taking_Application
                 window.Show();
             }
         }
+        public static bool HasOpenWindow(Note note)
+        {
+            Window? window = FindWindow(note);
+            return window != null ? true : false;
+        }
         public static void CloseAllWindows()
         {
             foreach (Window window in WindowStack)

@@ -25,7 +25,7 @@ namespace Note_taking_Application.ViewModels
                 NoteModel.Content = value;
                 NoteModel.LastEdit = DateTime.Now;
                 OnPropertyChanged();
-                OnContentChanged?.Invoke(this, new NotesPageUpdateEventArgs() { Content = value, LastEdit = NoteModel.LastEdit });
+                OnContentChanged?.Invoke(this, new NotesPageActionRequestEventArgs() { Note = NoteModel, Requester = this });
             }
         }
         private string? content { get; set; }
@@ -39,7 +39,7 @@ namespace Note_taking_Application.ViewModels
             AddNoteCommand = new RelayCommand(CreateNewNote);
         }
 
-        public EventHandler<NotesPageUpdateEventArgs>? OnContentChanged;
+        public EventHandler<NotesPageActionRequestEventArgs>? OnContentChanged;
         public EventHandler<NotesPageActionRequestEventArgs>? OnCreateNewNote;
         
         public void CreateNewNote()

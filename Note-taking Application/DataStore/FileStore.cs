@@ -1,4 +1,5 @@
-﻿using Note_taking_Application.Interfaces;
+﻿using Newtonsoft.Json;
+using Note_taking_Application.Interfaces;
 using Note_taking_Application.Models;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Note_taking_Application.DataStore
 {
@@ -30,32 +32,26 @@ namespace Note_taking_Application.DataStore
                     NoteList.Add(note);
                 }
             }
-            
-            if (NoteList.Count == 0)
-                return GetDummyData();
 
             return NoteList;
         }
 
-        public void Save(string json)
+        public void Save(Note note)
         {
-            throw new NotImplementedException();
+            string json = JsonConvert.SerializeObject(note);
+            string fileName = $@"Notes\{note.ID}";
+
+            File.WriteAllText(fileName, json);
         }
 
-        private List<Note> GetDummyData()
+        public void Delete(Note note)
         {
-            List<Note> note = new List<Note>()
+            string filename = $@"Notes\{note.ID}";
+
+            if (File.Exists(filename))
             {
-                new Note("Test1","Content1"),
-                new Note("Test2","Content2"),
-                //new Note("Test3","Content3"),
-                //new Note("Test4","Content4"),
-                //new Note("Test5","Content5"),
-                //new Note("Test6","Content6"),
-                //new Note("Test7","Content7"),
-                //new Note("Test8","Content8"),
-            };
-            return note;
+                File.Delete(filename);
+            }
         }
     }
 }

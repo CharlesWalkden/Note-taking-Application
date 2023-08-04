@@ -5,13 +5,8 @@ using Note_taking_Application.Models;
 using Note_taking_Application.UserControls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Note_taking_Application.ViewModels
 {
@@ -39,7 +34,7 @@ namespace Note_taking_Application.ViewModels
 
         private void AddNote()
         {
-            Note newNote = new();
+            Note newNote = new(true);
             NoteList.Add(newNote);
             SortNoteList();
         }
@@ -67,23 +62,26 @@ namespace Note_taking_Application.ViewModels
             NoteList.Remove(e.Note);
             if (e.Note.IsOpen)
                 CloseNote(e);
+
+            DeleteNote(e);
         }
         private void CloseNote(NotesPageActionRequestEventArgs e)
         {
             WindowManager.CloseWindow(e.Note);
             e.Note.IsOpen = false;
+            SaveNote(e);
         }
         private void SaveNote(NotesPageActionRequestEventArgs e)
         {
-            //DataStore.Save<Note>(note);
+            DataStore.Save(e.Note);
         }
         private void DeleteNote(NotesPageActionRequestEventArgs e)
         {
-            //DataStore.Delete<Note>(note);
+            DataStore.Delete(e.Note);
         }
         private void SortNoteList()
         {
-            NoteList.AddNewRange(NoteList.OrderBy(x => x.LastEdit).ToList());
+            NoteList.AddNewRange(NoteList.OrderByDescending(x => x.LastEdit).ToList());
         }
 
         public void AddNote_Request(object? sender, EventArgs e)
@@ -101,6 +99,13 @@ namespace Note_taking_Application.ViewModels
         public void OpenNote_Request(object? sender, NotesPageActionRequestEventArgs e)
         {
             OpenNote(e);
+        }
+        public void ContentUpdate_Request(object? sender, NotesPageActionRequestEventArgs e)
+        {
+            SortNoteList();
+            // TODO: Limit the saving. Have a flag or something in the event args to determine if we should save.
+            // Currently saving on every text change. Maybe only save a few seconds after finish typing or on close or something....
+            SaveNote(e);
         }
     }
 

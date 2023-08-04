@@ -66,6 +66,16 @@ namespace Note_taking_Application.UserControls
                     noteTileViewModel.OnDeleteNote += mainViewModel.DeleteNote_Request;
                     noteTileViewModel.OnOpenNote += mainViewModel.OpenNote_Request;
                     noteTileViewModel.OnCloseNote += mainViewModel.CloseNote_Request;
+                    noteTileViewModel.OnContentUpdate += mainViewModel.ContentUpdate_Request;
+                }
+
+                if (note.IsOpen)
+                {
+                    bool hasOpenWindow = WindowManager.HasOpenWindow(note);
+                    if (!hasOpenWindow)
+                    {
+                        noteTileViewModel.OpenNote();
+                    }
                 }
             }
 
@@ -132,8 +142,7 @@ namespace Note_taking_Application.UserControls
 
         #endregion
 
-        
-        // TODO: Move these into a style.
+        #region Mouse Events
 
         private void Border_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -150,5 +159,23 @@ namespace Note_taking_Application.UserControls
                 border.Background = new SolidColorBrush(Color.FromRgb(51, 51, 51));
             }
         }
+
+        private DateTime lastClickTime = DateTime.Now;
+        private const int doubleClickDelay = 200;
+        private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            TimeSpan clickInterval = now - lastClickTime;
+            lastClickTime = now;
+
+            if (clickInterval.TotalMilliseconds < doubleClickDelay)
+            {
+                // Only want to open this if its not already open
+                if (!ViewModel.NoteModel.IsOpen)
+                    ViewModel.OpenNote();
+            }
+        }
+
+        #endregion
     }
 }

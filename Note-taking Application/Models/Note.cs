@@ -7,17 +7,27 @@ using System.Threading.Tasks;
 namespace Note_taking_Application.Models
 {
     public class Note
-    { 
-        public string? Title { get; set; }
+    {
+        public Guid ID { get; set; } = Guid.NewGuid();
         public string? Content { get; set; }
         public DateTime LastEdit { get; set; }
         public bool IsOpen { get; set; } = false;
-        public Note(string title, string content)
+        public Note(Guid id, string content, bool isOpen = false)
         {
             LastEdit = DateTime.Now;
-            Title = title;
+            ID = id;
             Content = content;
+            IsOpen = isOpen;
         }
+        public Note(bool isOpen = false)
+        {
+            LastEdit = DateTime.Now;
+            IsOpen = isOpen;
+        }
+
+        /// <summary>
+        /// Empty constructor needed for Deserialization of json file.
+        /// </summary>
         public Note()
         {
 

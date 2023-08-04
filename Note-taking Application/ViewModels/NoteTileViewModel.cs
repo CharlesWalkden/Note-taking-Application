@@ -64,6 +64,8 @@ namespace Note_taking_Application.ViewModels
 
         public EventHandler<NotesPageActionRequestEventArgs>? OnCloseNote;
 
+        public EventHandler<NotesPageActionRequestEventArgs>? OnContentUpdate;
+
         #endregion
 
         #region ICommands
@@ -92,10 +94,13 @@ namespace Note_taking_Application.ViewModels
             CloseNote();
         }
 
-        public void NotesPage_UpdateContent(object? sender, NotesPageUpdateEventArgs e)
+        public void NotesPage_UpdateContent(object? sender, NotesPageActionRequestEventArgs e)
         {
-            Content = e.Content ?? "";
-            LastEdit = e.LastEdit;
+            Content = e.Note.Content ?? "";
+            LastEdit = e.Note.LastEdit;
+            // Calling this so that we can then update the note list as the last edit time will have updated.
+            // This will re-order the list and mostlikely move this note to the top.
+            OnContentUpdate?.Invoke(sender, e);
         }
         
         public void NotesPage_CreateNewNote(object? sender, NotesPageActionRequestEventArgs e)
