@@ -6,6 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 
@@ -33,6 +34,7 @@ namespace Note_taking_Application.UserControls
         {
             InitializeComponent();
             DataContext = new NotesPageViewModel(new Note());
+
         }
 
         #endregion
@@ -57,6 +59,7 @@ namespace Note_taking_Application.UserControls
 
         #region Events
 
+        
         private void closeNoteButton_Click(object sender, RoutedEventArgs e)
         {
             OnClose?.Invoke(sender, new NotesPageActionRequestEventArgs() { Note = ViewModel.NoteModel, Requester = this });
@@ -97,5 +100,11 @@ namespace Note_taking_Application.UserControls
         {
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            new ResizeAdorner(notes, 200, 350);
+        }
     }
+    
 }
