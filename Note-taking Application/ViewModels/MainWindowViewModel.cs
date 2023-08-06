@@ -23,7 +23,7 @@ namespace Note_taking_Application.ViewModels
                 FilterNoteList(value);
             }
         }
-        private string searchText { get; set; }
+        private string searchText { get; set; } = string.Empty;
 
         public IDataStore DataStore { get; set; }
         public ICommand AddNoteCommand { get; set; }

@@ -89,22 +89,26 @@ namespace Note_taking_Application.UserControls
         private void Border_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             ContextMenu contextMenu = new ContextMenu();
+            contextMenu.Style = Application.Current.Resources["ContextMenuStyle"] as Style;
 
             MenuItem item;
             if (ViewModel.NoteModel.IsOpen)
             {
                 item = new MenuItem() { Header = "Close Note" };
+                item.Style = Application.Current.Resources["MenuItemStyle"] as Style;
                 item.Click += Item_Click;
                 contextMenu.Items.Add(item);
             }
             else
             {
                 item = new MenuItem() { Header = "Open Note" };
+                item.Style = Application.Current.Resources["MenuItemStyle"] as Style;
                 item.Click += Item_Click;
                 contextMenu.Items.Add(item);
             }
 
             item = new MenuItem() { Header = "Delete Note" };
+            item.Style = Application.Current.Resources["MenuItemStyle"] as Style;
             item.Click += Item_Click;
             contextMenu.Items.Add(item);
 

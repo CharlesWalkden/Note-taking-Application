@@ -21,7 +21,7 @@
                 MouseEnter="banner_MouseEnter">
                 <Grid x:Name="bannerActions">
                     <Button Grid.Row="0" Style="{StaticResource buttonAltPlus}" Command="{Binding AddNoteCommand}" Height="30" Width="30" HorizontalAlignment="Left" ToolTip="New Note"/>
-                    <Button Grid.Row="0" Style="{StaticResource buttonAltCross}" Height="30" Width="30" HorizontalAlignment="Right" ToolTip="New Note"  Click="closeNoteButton_Click"/>
+                    <Button Grid.Row="0" Style="{StaticResource buttonAltCross}" Height="30" Width="30" HorizontalAlignment="Right" ToolTip="Close Note"  Click="closeNoteButton_Click"/>
                 </Grid>
             </Border>
 
