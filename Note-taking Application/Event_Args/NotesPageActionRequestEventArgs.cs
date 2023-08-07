@@ -11,6 +11,7 @@ namespace Note_taking_Application.Event_Args
     {
         public Note Note { get; set; }
         public object Requester { get; set; }
+        public bool SaveNote { get; set; } = false;
 
     }
 }

@@ -149,9 +149,12 @@ namespace Note_taking_Application.ViewModels
         public void ContentUpdate_Request(object? sender, NotesPageActionRequestEventArgs e)
         {
             SortNoteList();
-            // TODO: Limit the saving. Have a flag or something in the event args to determine if we should save.
-            // Currently saving on every text change. Maybe only save a few seconds after finish typing or on close or something....
-            SaveNote(e);
+
+            // Don't want to always save, only when we specify to save.
+            if (e.SaveNote)
+            {
+                SaveNote(e);
+            }
         }
     }
 
