@@ -60,6 +60,11 @@ namespace Note_taking_Application.ViewModels
                     FilteredList.Add(newNote);
                 }
             }
+            else
+            {
+                // If there is no filter, we just want to add it.
+                FilteredList.Add(newNote);
+            }
             SortNoteList();
         }
         private void OpenNote(NotesPageActionRequestEventArgs e)
